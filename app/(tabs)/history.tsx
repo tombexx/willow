@@ -1,12 +1,12 @@
 import React from "react"
 import { View, StyleSheet } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { HomeScreen } from "@/screens/HomeScreen"
+import { HistoryScreen } from "@/screens/HistoryScreen"
 
-export default function TabHomeScreen() {
+export default function TabHistoryScreen() {
   return (
     <SafeAreaView style={styles.container} edges={["bottom"]}>
-      <HomeScreen />
+      <HistoryScreen />
     </SafeAreaView>
   )
 }
