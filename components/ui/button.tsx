@@ -1,48 +1,82 @@
 import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+import { Pressable, Text, StyleSheet, type PressableProps } from "react-native"
 
-import { cn } from "@/lib/utils"
-
-const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-  {
-    variants: {
-      variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-      },
-      size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
-  },
-)
-
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean
+interface ButtonProps extends PressableProps {
+  children: React.ReactNode
+  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+const Button = React.forwardRef<React.ElementRef<typeof Pressable>, ButtonProps>(
+  ({ children, variant = "default", style, ...props }, ref) => {
+    return (
+      <Pressable
+        ref={ref}
+        style={({ pressed }) => [styles.button, styles[variant], pressed && styles.pressed, style]}
+        {...props}
+      >
+        <Text style={[styles.text, styles[`${variant}Text`]]}>{children}</Text>
+      </Pressable>
+    )
   },
 )
+
 Button.displayName = "Button"
 
-export { Button, buttonVariants }
+export { Button }
+
+const styles = StyleSheet.create({
+  button: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  default: {
+    backgroundColor: "#3b82f6",
+  },
+  destructive: {
+    backgroundColor: "#ef4444",
+  },
+  outline: {
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: "#3b82f6",
+  },
+  secondary: {
+    backgroundColor: "#6b7280",
+  },
+  ghost: {
+    backgroundColor: "transparent",
+  },
+  link: {
+    backgroundColor: "transparent",
+    paddingHorizontal: 0,
+  },
+  pressed: {
+    opacity: 0.7,
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  defaultText: {
+    color: "#ffffff",
+  },
+  destructiveText: {
+    color: "#ffffff",
+  },
+  outlineText: {
+    color: "#3b82f6",
+  },
+  secondaryText: {
+    color: "#ffffff",
+  },
+  ghostText: {
+    color: "#3b82f6",
+  },
+  linkText: {
+    color: "#3b82f6",
+  },
+})
 

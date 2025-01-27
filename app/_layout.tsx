@@ -2,16 +2,45 @@ import React from "react"
 import { Stack } from "expo-router"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { ShuttleProvider } from "@/context/ShuttleContext"
+import Drawer from "@/components/Drawer"
+import { DrawerProvider } from "@/context/DrawerContext"
+import { HeaderMenuButton } from "@/components/HeaderMenuButton"
+import { GestureHandlerRootView } from "react-native-gesture-handler"
+
+function StackNavigator() {
+  return (
+    <Stack
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#f3f4f6",
+        },
+        headerTintColor: "#000",
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+        headerRight: () => <HeaderMenuButton />,
+      }}
+    >
+      <Stack.Screen name="index" options={{ title: "Pickups" }} />
+      <Stack.Screen name="dashboard" options={{ title: "Dashboard" }} />
+      <Stack.Screen name="history" options={{ title: "History" }} />
+      <Stack.Screen name="profile" options={{ title: "Profile" }} />
+    </Stack>
+  )
+}
 
 export default function RootLayout() {
   return (
-    <SafeAreaProvider>
-      <ShuttleProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-      </ShuttleProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <DrawerProvider>
+        <SafeAreaProvider>
+          <ShuttleProvider>
+            <StackNavigator />
+            <Drawer />
+          </ShuttleProvider>
+        </SafeAreaProvider>
+      </DrawerProvider>
+    </GestureHandlerRootView>
   )
 }
 
