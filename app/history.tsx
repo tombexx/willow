@@ -1,10 +1,11 @@
 import React from "react"
 import { View, Text, StyleSheet } from "react-native"
 
-export default function HomeScreen() {
+export default function HistoryScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to ShuttleSync</Text>
+      <Text style={styles.title}>Pickup History</Text>
+      {/* Add history content here */}
     </View>
   )
 }
